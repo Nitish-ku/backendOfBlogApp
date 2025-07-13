@@ -1,5 +1,14 @@
 import {sql} from "../config/db.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+
+// helper function to generate a token
+
+const generateToken = (id) => {
+    return jwt.sign({id}, process.env.JWT_SECRET,{
+        expiresIn: "30d", // The token will expire in 30 days
+    });
+};
 
 export const loginUser = async(req,res) => {
     const {gmail, password} = req.body;
@@ -27,9 +36,13 @@ export const loginUser = async(req,res) => {
             return res.status(400).json({message: "incorrect password"});
         } 
         if (isMatch){
-        delete user.password;
-        return res.status(200).json({data: user});
-        }
+        // if password is correct, generate a token and send it back
+        const token = generateToken(user.id);
+        return res.status(200).json({message: "Login successful", token: token, user: {
+            id: user.id,
+            gmail: user.gmail
+        }});
+        } 
 
         } catch (error){
             console.log("Login Error: ", error);
