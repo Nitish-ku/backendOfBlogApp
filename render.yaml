@@ -1,6 +1,6 @@
 services:
   # A PostgreSQL database
-  - type: db
+  - type: psql
     name: blog-database
     databaseName: blogdb
     plan: free # You can choose a paid plan for production
@@ -16,22 +16,22 @@ services:
     envVars:
       - key: PGHOST
         fromService:
-          type: db
+          type: psql
           name: blog-database
           property: host
       - key: PGDATABASE
         fromService:
-          type: db
+          type: psql
           name: blog-database
           property: database
       - key: PGUSER
         fromService:
-          type: db
+          type: psql
           name: blog-database
           property: user
       - key: PGPASSWORD
         fromService:
-          type: db
+          type: psql
           name: blog-database
           property: password
       - key: JWT_SECRET # IMPORTANT: You must set this manually in the Render dashboard
