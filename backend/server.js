@@ -21,6 +21,12 @@ app.get("/", (req, res) => {
 app.use(userRoutes);
 app.use(blogPostsRoutes);
 
+// Catch-all route for debugging
+app.use((req, res) => {
+    console.log(`No route found for ${req.method} ${req.originalUrl}`);
+    res.status(404).send(`Cannot ${req.method} ${req.originalUrl}`);
+});
+
 const initDB = async() => {
    try{
     await sql `
