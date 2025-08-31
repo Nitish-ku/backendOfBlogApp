@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import {sql} from "./config/db.js";
 import userRoutes from "./routes/userRoutes.js";
 import blogPostsRoutes from "./routes/blogPostsRoutes.js";
+import cors from "cors";
 
 const app = express();
 
@@ -10,6 +11,7 @@ dotenv.config();
 
 const {PORT} = process.env;
 
+app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
